@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <title>GymFlow - Tu Rutina Semanal Inteligente y Personalizada</title>
+  <meta name="description" content="Generador inteligente de rutinas de ejercicio semanales personalizadas. Diseñado para entrenamientos sin conexión y optimizado para iOS.">
+  
+  <!-- PWA & Apple Standalone Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GymFlow">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d0f12">
+
+  <!-- Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient Background Gradients -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="app-container">
+    
+    <!-- 1. WELCOME / ONBOARDING SCREEN -->
+    <section id="welcome-screen" class="welcome-container" style="display: none;">
+      <div class="welcome-card glass-panel">
+        <div class="logo-wrapper">
+          <svg class="logo-icon" viewBox="0 0 24 24" width="48" height="48">
+            <path fill="currentColor" d="M20.57 14.86L22 13.43L20.57 12L17 15.57L8.43 7L12 3.43L10.57 2L9.14 3.43L7.71 2L6.29 3.43L4.86 2L3.43 3.43L2 2L.57 3.43L2 4.86L.57 6.29L2 7.71L.57 9.14L2 10.57L3.43 12L2 13.43L3.43 14.86L4.86 13.43L6.29 14.86L7.71 13.43L9.14 14.86L10.57 13.43L12 14.86L20.57 14.86M3.43 6.29L4.86 7.71L3.43 9.14L4.86 10.57L6.29 9.14L7.71 10.57L9.14 9.14L10.57 10.57L12 9.14L13.43 10.57L14.86 9.14L16.29 10.57L17.71 9.14L19.14 10.57L20.57 9.14L22 10.57L20.57 12L22 13.43L20.57 14.86L22 16.29L20.57 17.71L22 19.14L20.57 20.57L19.14 19.14L17.71 20.57L16.29 19.14L14.86 20.57L13.43 19.14L12 20.57L10.57 19.14L9.14 20.57L7.71 19.14L6.29 20.57L4.86 19.14L3.43 20.57L2 19.14L.57 20.57L2 22L3.43 20.57L4.86 22L6.29 20.57L7.71 22L9.14 20.57L10.57 22L12 20.57L13.43 22L14.86 20.57L16.29 22L17.71 20.57L19.14 22L20.57 20.57L22 22L23.43 20.57" style="display:none;"/>
+            <path fill="url(#logo-grad)" d="M7 5h2v14H7zm8 0h2v14h-2zM3 9h2v6H3zm16 0h2v6h-2zm-8-2h2v10h-2z"/>
+            <defs>
+              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff6b00" />
+                <stop offset="100%" stop-color="#ff9e00" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <h1 class="welcome-title">Gym<span>Flow</span></h1>
+        </div>
+        <p class="welcome-tagline">Tu rutina semanal inteligente, adaptada a vos de forma 100% privada y offline.</p>
+        <div class="welcome-features">
+          <div class="feature-item">
+            <div class="feature-icon">💪</div>
+            <div class="feature-text">
+              <h3>Fases Adaptativas</h3>
+              <p>Progresión inteligente según tu nivel y objetivos personales.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🔒</div>
+            <div class="feature-text">
+              <h3>100% Privado</h3>
+              <p>Tus datos se quedan en tu celular. Sin cuentas ni registros molestos.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">✈️</div>
+            <div class="feature-text">
+              <h3>Modo Offline</h3>
+              <p>Funciona sin internet en el gimnasio, en el parque o donde quieras.</p>
+            </div>
+          </div>
+        </div>
+        <button id="btn-onboard-create" class="btn btn-primary btn-large">Comenzar Perfil</button>
+      </div>
+    </section>
+
+    <!-- 2. APP LAYOUT SCREEN -->
+    <section id="app-layout" class="app-grid" style="display: none;">
+      
+      <!-- TOP NAV & PROFILE BAR -->
+      <header class="app-header glass-panel">
+        <div class="header-logo-group">
+          <svg class="header-logo-icon" viewBox="0 0 24 24" width="32" height="32">
+            <path fill="url(#logo-grad)" d="M7 5h2v14H7zm8 0h2v14h-2zM3 9h2v6H3zm16 0h2v6h-2zm-8-2h2v10h-2z"/>
+          </svg>
+          <h2>Gym<span>Flow</span></h2>
+        </div>
+
+        <div class="header-actions">
+          <div class="profile-switcher-wrapper">
+            <select id="profile-select" class="glass-select" aria-label="Seleccionar perfil activo">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+          <div class="profile-management-buttons">
+            <button id="btn-edit-profile" class="btn btn-icon" title="Editar Perfil" aria-label="Editar Perfil">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              </svg>
+            </button>
+            <button id="btn-delete-profile" class="btn btn-icon btn-danger" title="Eliminar Perfil" aria-label="Eliminar Perfil">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+            </button>
+            <button id="btn-export-data" class="btn btn-icon" title="Exportar Datos" aria-label="Exportar Datos">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+              </svg>
+            </button>
+            <button id="btn-import-data" class="btn btn-icon" title="Importar Datos" aria-label="Importar Datos">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM12 9l5 5h-3v4h-4v-4H7l5-5z"/>
+              </svg>
+            </button>
+            <input type="file" id="import-file-input" accept=".json" style="display: none;">
+          </div>
+        </div>
+      </header>
+
+      <!-- DASHBOARD WIDGETS -->
+      <section class="dashboard-section">
+        <div class="welcome-user-text">
+          <h3>¡Hola, <span id="active-profile-name">...</span>!</h3>
+          <p>Tu estado físico actual y metas recomendadas:</p>
+        </div>
+        <div class="dashboard-grid">
+          <!-- BMI Card -->
+          <div class="dashboard-card glass-panel" id="card-bmi">
+            <div class="card-header">
+              <span class="card-icon">⚖️</span>
+              <h4>Índice de Masa Corporal (IMC)</h4>
+            </div>
+            <div class="card-body">
+              <div class="metric-value" id="bmi-value">--.-</div>
+              <div class="metric-status" id="bmi-category">Calculando...</div>
+            </div>
+          </div>
+
+          <!-- Ideal Weight Card -->
+          <div class="dashboard-card glass-panel" id="card-ideal-weight">
+            <div class="card-header">
+              <span class="card-icon">🎯</span>
+              <h4>Peso Ideal (Lorenz)</h4>
+            </div>
+            <div class="card-body">
+              <div class="metric-value" id="ideal-weight-value">-- kg</div>
+              <div class="metric-status" id="ideal-weight-status">Recomendado para vos</div>
+            </div>
+          </div>
+
+          <!-- Water Target Card -->
+          <div class="dashboard-card glass-panel" id="card-water">
+            <div class="card-header">
+              <span class="card-icon">💧</span>
+              <h4>Meta de Hidratación</h4>
+            </div>
+            <div class="card-body">
+              <div class="metric-value" id="water-value">-- L</div>
+              <div class="metric-status">Consumo recomendado</div>
+            </div>
+          </div>
+
+          <!-- Streak Card -->
+          <div class="dashboard-card glass-panel" id="card-streak">
+            <div class="card-header">
+              <span class="card-icon">🔥</span>
+              <h4>Racha Activa</h4>
+            </div>
+            <div class="card-body">
+              <div class="metric-value" id="streak-value">0 días</div>
+              <div class="metric-status">¡Mantené el ritmo!</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIVE WORKOUT ROUTINE SECTION -->
+      <section id="workout-content" class="workout-section">
+        <!-- Dynamically populated by UI.renderWorkoutsSection() -->
+      </section>
+
+      <!-- FOOTER BACKUP & RESTORE UTILITIES -->
+      <footer class="app-footer glass-panel">
+        <div class="backup-actions">
+          <span>Resguardo de datos privados:</span>
+          <div class="backup-buttons">
+            <button id="btn-export" class="btn btn-secondary btn-small">Exportar Datos (JSON)</button>
+            <label for="file-import" class="btn btn-secondary btn-small cursor-pointer">
+              Importar Datos (JSON)
+              <input type="file" id="file-import" accept=".json" style="display: none;">
+            </label>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- 3. CREATE / EDIT PROFILE MODAL -->
+  <dialog id="profile-modal" class="modal-overlay">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3 id="profile-form-title">Crear Perfil</h3>
+        <button type="button" class="btn-close" onclick="UI.hideProfileModal()" aria-label="Cerrar modal">&times;</button>
+      </div>
+      <form id="profile-form">
+        <div class="form-grid">
+          
+          <div class="form-group">
+            <label for="form-name">Nombre</label>
+            <input type="text" id="form-name" name="name" required placeholder="Ej. Juan, María">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-weight">Peso (kg)</label>
+              <input type="number" id="form-weight" name="weight" step="0.1" min="30" max="250" required placeholder="Ej. 72.5">
+            </div>
+            <div class="form-group">
+              <label for="form-height">Estatura (cm)</label>
+              <input type="number" id="form-height" name="height" min="100" max="250" required placeholder="Ej. 175">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-age">Edad</label>
+              <input type="number" id="form-age" name="age" min="10" max="100" required placeholder="Ej. 32">
+            </div>
+            <div class="form-group">
+              <label for="form-gender">Sexo</label>
+              <select id="form-gender" name="gender" required>
+                <option value="" disabled selected>Seleccioná...</option>
+                <option value="male">Hombre</option>
+                <option value="female">Mujer</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="form-goal">Objetivo</label>
+            <select id="form-goal" name="goal" required>
+              <option value="" disabled selected>¿Qué querés lograr?</option>
+              <option value="lose-weight">Perder Peso (Quemá grasa & salud)</option>
+              <option value="build-muscle">Ganar Músculo (Fuerza & volumen)</option>
+              <option value="get-fit">Estar en Forma (Resistencia & movilidad)</option>
+            </select>
+            <span id="goal-suggestion-text" class="form-suggestion-text"></span>
+          </div>
+
+          <div class="form-group">
+            <label>Equipamiento Disponible</label>
+            <div class="equipment-checkbox-group">
+              <label class="checkbox-container">
+                <input type="checkbox" name="equipment" value="dumbbells">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Mancuernas</span>
+              </label>
+              <label class="checkbox-container">
+                <input type="checkbox" name="equipment" value="barbell">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Barra</span>
+              </label>
+              <label class="checkbox-container">
+                <input type="checkbox" name="equipment" value="kettlebell">
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-label">Pesa Rusa</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Renders Phase & Week dropdowns ONLY when editing -->
+          <div id="form-phase-week-group"></div>
+
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="UI.hideProfileModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Floating Rest Timer Overlay -->
+  <div id="floating-timer-container" class="glass-panel" style="display: none;">
+    <div class="timer-header">
+      <span>⏱️ Descanso Activo</span>
+      <button class="btn-close-timer" onclick="UI.closeRestTimer()" aria-label="Cerrar temporizador">&times;</button>
+    </div>
+    <div class="timer-display" id="timer-countdown">00:00</div>
+    <div class="timer-controls">
+      <button id="btn-timer-play-pause" class="btn btn-primary">Pausar</button>
+      <button id="btn-timer-skip" class="btn btn-secondary">Saltar</button>
+    </div>
+    <div class="timer-progress-bar">
+      <div id="timer-progress-fill"></div>
+    </div>
+  </div>
+
+  <!-- Script Injection -->
+  <script src="app.js"></script>
+</body>
+</html>
