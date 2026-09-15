@@ -4,8 +4,7 @@
   "description": "Tu Rutina Semanal Inteligente y Personalizada - PWA Offline",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
+    "dev": "node dev-server.js",
     "test": "node --test tests/**/*.test.js",
     "test:watch": "node --test --watch tests/**/*.test.js"
   },
