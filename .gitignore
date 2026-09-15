@@ -1,4 +1,5 @@
-.DS_Store
-.atl/
 node_modules/
-dist/
+.engram/
+.atl/
+.DS_Store
+Thumbs.db

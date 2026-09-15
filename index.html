@@ -11,6 +11,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="GymFlow">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0d0f12">
@@ -29,6 +32,18 @@
 
   <!-- MAIN APP CONTAINER -->
   <main id="app-container">
+
+    <!-- PWA Update Notification Toast -->
+    <div id="pwa-update-toast" class="pwa-update-toast" style="display: none;">
+      <div class="pwa-toast-content">
+        <span class="pwa-toast-icon">⚡</span>
+        <div class="pwa-toast-text">
+          <strong>¡Actualización Lista!</strong>
+          <p>Nueva versión disponible con modelos 3D y periodización semanal.</p>
+        </div>
+      </div>
+      <button type="button" id="pwa-btn-reload" class="btn btn-sm btn-primary">Actualizar</button>
+    </div>
     
     <!-- 1. WELCOME / ONBOARDING SCREEN -->
     <section id="welcome-screen" class="welcome-container" style="display: none;">
@@ -92,29 +107,11 @@
               <!-- Dynamically populated -->
             </select>
           </div>
-          <div class="profile-management-buttons">
-            <button id="btn-edit-profile" class="btn btn-icon" title="Editar Perfil" aria-label="Editar Perfil">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-              </svg>
-            </button>
-            <button id="btn-delete-profile" class="btn btn-icon btn-danger" title="Eliminar Perfil" aria-label="Eliminar Perfil">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-              </svg>
-            </button>
-            <button id="btn-export-data" class="btn btn-icon" title="Exportar Datos" aria-label="Exportar Datos">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
-              </svg>
-            </button>
-            <button id="btn-import-data" class="btn btn-icon" title="Importar Datos" aria-label="Importar Datos">
-              <svg viewBox="0 0 24 24" width="20" height="20">
-                <path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM12 9l5 5h-3v4h-4v-4H7l5-5z"/>
-              </svg>
-            </button>
-            <input type="file" id="import-file-input" accept=".json" style="display: none;">
-          </div>
+          <button id="btn-open-settings" class="btn btn-icon btn-settings" title="Ajustes y Respaldo" aria-label="Ajustes y Respaldo">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -180,17 +177,11 @@
         <!-- Dynamically populated by UI.renderWorkoutsSection() -->
       </section>
 
-      <!-- FOOTER BACKUP & RESTORE UTILITIES -->
+      <!-- CLEAN APP FOOTER -->
       <footer class="app-footer glass-panel">
-        <div class="backup-actions">
-          <span>Resguardo de datos privados:</span>
-          <div class="backup-buttons">
-            <button id="btn-export" class="btn btn-secondary btn-small">Exportar Datos (JSON)</button>
-            <label for="file-import" class="btn btn-secondary btn-small cursor-pointer">
-              Importar Datos (JSON)
-              <input type="file" id="file-import" accept=".json" style="display: none;">
-            </label>
-          </div>
+        <div class="footer-info">
+          <span class="offline-badge">⚡ 100% Offline & Privado</span>
+          <span class="version-tag">GymFlow v2.0</span>
         </div>
       </footer>
     </section>
@@ -281,24 +272,249 @@
       </form>
     </div>
   </dialog>
+ 
+  <!-- 4. SETTINGS & PROFILE MANAGEMENT MODAL -->
+  <dialog id="settings-modal" class="modal-overlay">
+    <div class="modal-card glass-panel settings-card">
+      <div class="modal-header">
+        <h3>Ajustes & Respaldo</h3>
+        <button type="button" class="btn-close" onclick="UI.hideSettingsModal()" aria-label="Cerrar">&times;</button>
+      </div>
+      <div class="settings-menu-list">
+        <button id="settings-btn-edit-profile" class="settings-action-row">
+          <div class="settings-action-info">
+            <span class="action-icon">✏️</span>
+            <div>
+              <strong>Editar Perfil Activo</strong>
+              <p>Modificá peso, estatura, objetivo o fase actual.</p>
+            </div>
+          </div>
+          <span class="action-arrow">›</span>
+        </button>
 
-  <!-- Floating Rest Timer Overlay -->
-  <div id="floating-timer-container" class="glass-panel" style="display: none;">
-    <div class="timer-header">
-      <span>⏱️ Descanso Activo</span>
-      <button class="btn-close-timer" onclick="UI.closeRestTimer()" aria-label="Cerrar temporizador">&times;</button>
+        <button id="settings-btn-new-profile" class="settings-action-row">
+          <div class="settings-action-info">
+            <span class="action-icon">➕</span>
+            <div>
+              <strong>Crear Nuevo Perfil</strong>
+              <p>Comenzá una rutina para otro usuario o meta.</p>
+            </div>
+          </div>
+          <span class="action-arrow">›</span>
+        </button>
+
+        <button id="settings-btn-export" class="settings-action-row">
+          <div class="settings-action-info">
+            <span class="action-icon">💾</span>
+            <div>
+              <strong>Exportar Copia de Seguridad</strong>
+              <p>Descargá tu historial y configuraciones en formato JSON.</p>
+            </div>
+          </div>
+          <span class="action-arrow">›</span>
+        </button>
+
+        <label for="settings-file-import" class="settings-action-row cursor-pointer">
+          <div class="settings-action-info">
+            <span class="action-icon">📥</span>
+            <div>
+              <strong>Restaurar desde Respaldo</strong>
+              <p>Cargá un archivo JSON previamente exportado.</p>
+            </div>
+          </div>
+          <span class="action-arrow">›</span>
+          <input type="file" id="settings-file-import" accept=".json" style="display: none;">
+        </label>
+
+        <button type="button" id="settings-btn-check-update" class="settings-action-row">
+          <div class="settings-action-info">
+            <span class="action-icon">🔄</span>
+            <div>
+              <strong>Buscar Actualizaciones (PWA v2.2)</strong>
+              <p id="settings-update-status">Comprobar nueva versión y sincronizar animaciones 3D.</p>
+            </div>
+          </div>
+          <span class="action-arrow">›</span>
+        </button>
+
+        <button id="settings-btn-delete-profile" class="settings-action-row text-danger">
+          <div class="settings-action-info">
+            <span class="action-icon">🗑️</span>
+            <div>
+              <strong class="text-danger">Eliminar Perfil Activo</strong>
+              <p>Borrar este perfil y todos sus datos locales.</p>
+            </div>
+          </div>
+          <span class="action-arrow">›</span>
+        </button>
+      </div>
+  </dialog>
+
+  <!-- 5. IMMERSIVE FULL-SCREEN EXERCISE GUIDE MODAL -->
+  <dialog id="exercise-guide-modal" class="modal-overlay full-screen-guide-overlay">
+    <div class="full-screen-guide-container">
+      <!-- Sticky Navigation Bar -->
+      <div class="guide-top-bar glass-panel">
+        <button type="button" class="btn-guide-back" onclick="UI.hideExerciseGuideModal()" aria-label="Volver a la rutina">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+          </svg>
+          <span>Rutina</span>
+        </button>
+        <div class="guide-top-title-group">
+          <span class="guide-badge-target" id="guide-modal-target">Músculos</span>
+          <h3 class="guide-heading" id="guide-modal-title">Sentadilla</h3>
+        </div>
+        <button type="button" class="btn-close" onclick="UI.hideExerciseGuideModal()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="guide-body-scroll">
+        <!-- 1. Hero 3D Stage: Clean Immersive Theater -->
+        <div class="exercise-stage-card">
+          <div class="stage-ambient-glow"></div>
+          <div class="stage-avatar-container" id="guide-modal-avatar">
+            <!-- Dynamic 3D Animated Figure injected here -->
+          </div>
+          
+          <!-- Floating Controls on Stage -->
+          <div class="stage-overlay-controls">
+            <div class="stage-cadence-pill">
+              <span class="live-dot-pulse"></span>
+              <span>Cadencia 2s / 1s</span>
+            </div>
+            <button type="button" id="btn-toggle-avatar-motion" class="stage-floating-pause-btn" aria-label="Pausar o reanudar animación" title="Pausar animación">
+              <span id="avatar-motion-icon">⏸</span>
+              <span id="avatar-motion-text">Pausar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Anatomical Muscle Targets Strip (Clean chips below stage) -->
+        <div class="guide-muscles-strip glass-panel">
+          <div class="muscle-chip primary">
+            <span class="chip-dot orange-glow"></span>
+            <span class="chip-label">Activo:</span>
+            <strong id="guide-modal-primary-muscles" class="chip-value">Músculo Principal</strong>
+          </div>
+          <div class="muscle-chip secondary" id="guide-modal-secondary-pill">
+            <span class="chip-dot coral-dot"></span>
+            <span class="chip-label">Sinergistas:</span>
+            <span id="guide-modal-secondary-muscles" class="chip-value">Músculos Secundarios</span>
+          </div>
+        </div>
+
+        <!-- 2. Target Metrics & Quick Rest Timer Button -->
+        <div class="guide-stats-strip glass-panel">
+          <div class="stat-pill">
+            <span class="stat-lbl">Series</span>
+            <strong class="stat-num" id="guide-modal-sets">3</strong>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-lbl">Reps</span>
+            <strong class="stat-num" id="guide-modal-reps">12</strong>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-lbl">Descanso</span>
+            <strong class="stat-num" id="guide-modal-rest">60s</strong>
+          </div>
+          <button id="guide-btn-start-timer" class="btn btn-primary btn-sm">
+            ⏱ Iniciar Descanso
+          </button>
+        </div>
+
+        <!-- 3. Weight Tracking for this exercise -->
+        <div class="guide-weight-strip glass-panel">
+          <span class="weight-strip-label">⚖️ Peso en este ejercicio:</span>
+          <div class="weight-strip-inputs">
+            <input type="number" id="guide-modal-weight-input" class="glass-input-sm" placeholder="Sin peso" min="0" step="0.5">
+            <span class="weight-unit">kg</span>
+            <button id="guide-btn-save-weight" class="btn btn-secondary btn-sm">Guardar</button>
+          </div>
+        </div>
+
+        <!-- Periodization Target for Active Week -->
+        <div class="guide-week-target-callout glass-panel" id="guide-modal-week-callout">
+          <div class="guide-week-callout-header">
+            <span class="guide-week-tag" id="guide-modal-week-tag">⚡ Semana 2: +Sobrecarga</span>
+            <span class="guide-week-badge-pill" id="guide-modal-week-badge">Mesociclo Sem 2/4</span>
+          </div>
+          <p class="guide-week-advice" id="guide-modal-week-advice">Superá los números de la Semana 1: anota más peso o más repeticiones.</p>
+        </div>
+
+        <!-- 4. Step by Step Guide (Paso a Paso) -->
+        <section class="guide-card-section glass-panel">
+          <div class="guide-section-header">
+            <span class="section-emoji">👣</span>
+            <h4>Cómo se hace: Paso a Paso</h4>
+          </div>
+          <div class="steps-flow-container" id="guide-modal-steps">
+            <!-- Dynamically populated steps -->
+          </div>
+        </section>
+
+        <!-- 5. Posture & Mistakes to Avoid -->
+        <section class="guide-card-section glass-panel">
+          <div class="guide-section-header">
+            <span class="section-emoji">⚠️</span>
+            <h4>Postura & Errores Frecuentes</h4>
+          </div>
+          <div class="posture-highlight-box" id="guide-modal-posture">
+            <!-- Main posture safety tip -->
+          </div>
+          <div class="mistakes-checklist" id="guide-modal-mistakes">
+            <!-- Mistakes list -->
+          </div>
+        </section>
+
+        <!-- 6. Breathing Tip -->
+        <section class="guide-card-section glass-panel">
+          <div class="guide-section-header">
+            <span class="section-emoji">💨</span>
+            <h4>Respiración y Cadencia</h4>
+          </div>
+          <p class="breathing-content-text" id="guide-modal-breathing"></p>
+        </section>
+
+        <!-- 7. Equipment Variations -->
+        <section class="guide-card-section glass-panel">
+          <div class="guide-section-header">
+            <span class="section-emoji">🛠️</span>
+            <h4>Variación según tu Equipamiento</h4>
+          </div>
+          <div class="equipment-variation-text" id="guide-modal-equipment"></div>
+        </section>
+
+        <!-- 8. Complete Exercise Button -->
+        <div class="guide-footer-action">
+          <button id="guide-btn-complete-action" class="btn btn-primary btn-large w-full">
+            Marcar Ejercicio como Completado ✓
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="timer-display" id="timer-countdown">00:00</div>
-    <div class="timer-controls">
-      <button id="btn-timer-play-pause" class="btn btn-primary">Pausar</button>
-      <button id="btn-timer-skip" class="btn btn-secondary">Saltar</button>
+  </dialog>
+
+  <!-- Docked Bottom Rest Timer -->
+  <div id="floating-timer-container" class="glass-panel docked-timer-panel" style="display: none;">
+    <div class="timer-inner">
+      <div class="timer-header">
+        <span class="timer-title">⏱️ Descanso</span>
+        <div class="timer-display" id="timer-countdown">00:00</div>
+        <button class="btn-close-timer" onclick="UI.closeRestTimer()" aria-label="Cerrar temporizador">&times;</button>
+      </div>
+      <div class="timer-controls">
+        <button id="btn-timer-play-pause" class="btn btn-primary btn-sm">Pausar</button>
+        <button id="btn-timer-add15" class="btn btn-secondary btn-sm">+15s</button>
+        <button id="btn-timer-skip" class="btn btn-secondary btn-sm">Saltar</button>
+      </div>
     </div>
     <div class="timer-progress-bar">
       <div id="timer-progress-fill"></div>
     </div>
   </div>
 
-  <!-- Script Injection -->
-  <script src="app.js"></script>
+  <!-- Script Injection (ES Modules) -->
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

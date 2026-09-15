@@ -822,8 +822,19 @@ const UI = {
     
     // Register Service Worker
     if ('serviceWorker' in navigator) {
+      let isRefreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!isRefreshing) {
+          isRefreshing = true;
+          window.location.reload();
+        }
+      });
       navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('Service Worker Registered'))
+        .then(reg => {
+          reg.update().catch(() => {});
+          if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          console.log('Service Worker Registered');
+        })
         .catch(err => console.error('Service Worker Registration Failed:', err));
     }
 
