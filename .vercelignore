@@ -2,5 +2,4 @@ dev-server.js
 tests/
 .atl/
 .engram/
-package.json
 package-lock.json
